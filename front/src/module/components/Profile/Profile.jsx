@@ -23,7 +23,6 @@ const gridSpacing = 3;
 import Avatar1 from "./Components/Images/Avatar.svg";
 import React, { useEffect, useState } from "react";
 import { HashLoader } from "react-spinners";
-import { Navigate } from "react-router-dom";
 import { showToastMessage } from "../../../utils";
 import { useNavigate } from "react-router-dom";
 
@@ -62,8 +61,6 @@ const Profile = () => {
     try {
       setIsLoading(true);
       const apiEndpoint = `${backendUrl}/profile_update`;
-      console.log("formData.profile_status");
-      console.log(formData.profile_status);
       if (formData.profile_status) {
         const res = await axios.post(apiEndpoint, formData);
         if (res.data.success) {

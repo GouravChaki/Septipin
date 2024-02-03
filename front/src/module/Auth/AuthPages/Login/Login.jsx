@@ -34,13 +34,10 @@ function Login() {
     let res;
     try {
       setIsLoading(true);
-      //console.log("loading ", isLoading);
       res = await a.login(obj);
       setIsLoading(false);
       if (res.data && res.data.success) {
-        //trigger toastify to display logged in
         showToastMessage("success", "Login success", 2000,2);
-        //console.log("Logged in");
         if(a.profileStatus == false){
           showToastMessage("success", "Let us know about you", 5000,3);
           Navigate("/profile"); 
@@ -53,6 +50,8 @@ function Login() {
         showToastMessage("error", "Wrong Credentials", 500,3);
       }
     } catch (error) {
+      console.log('error')
+      console.log(error)
       await showToastMessage("error", "Internal Server Error", 500,4);
     }
   };
@@ -109,15 +108,7 @@ function Login() {
                     {
                       required: true,
                       message: "Please input your password!",
-                    },
-                    {
-                      min: 8,
-                      message: "Password must be at least 8 characters long!",
-                    },
-                    {
-                      pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-                      message: "Password must be a combination of letters and numbers!",
-                    },
+                    }
                   ]}
                     name="password"
                     label="Password"

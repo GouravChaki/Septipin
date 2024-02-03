@@ -3,9 +3,9 @@ import { useAuth } from "../../common/hooks/useAuth";
 
 export const ProtectedRoute = ({ children }) => {
   const { user } = useAuth();
-  if (!user && !window.localStorage.getItem("user")) {
+  if (!user && window.localStorage.getItem("user") !== null) {
     // user is not authenticated
-    return <Navigate to="/" />;
+    return <Navigate to="/login" />;
   }
   return <>{children}</>;
 };

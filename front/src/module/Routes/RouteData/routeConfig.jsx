@@ -6,14 +6,17 @@ import { LandingPage } from "../../components/LandingPage";
 import { Outlet, createBrowserRouter } from "react-router-dom";
 import { ProtectedRoute } from "../ProtectedRoute/ProtectedRoute";
 import { Statistics } from "../../components/StatisticalTracker";
-import { Calendr } from "../../common/Calendar";
-import { showToastMessage } from "../../../utils";
 import Profile from "../../components/Profile/Profile";
+import { AuthProvider } from "../../common/hooks/useAuth";
 
 const routerConfig = createBrowserRouter([
   {
     path: "/",
-    element: <Outlet />,
+    element: (
+      <AuthProvider>
+        <Outlet />
+      </AuthProvider>
+    ),
     children: [
       {
         path: "/",
@@ -46,7 +49,7 @@ const routerConfig = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <NavbarRouteLayout>
-              < Statistics />
+              <Statistics />
             </NavbarRouteLayout>
           </ProtectedRoute>
         ),
@@ -56,11 +59,11 @@ const routerConfig = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <NavbarRouteLayout>
-              < Profile />
+              <Profile />
             </NavbarRouteLayout>
           </ProtectedRoute>
         ),
-      }
+      },
     ],
   },
 ]);
