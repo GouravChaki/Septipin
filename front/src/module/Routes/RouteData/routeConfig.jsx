@@ -8,6 +8,7 @@ import { ProtectedRoute } from "../ProtectedRoute/ProtectedRoute";
 import { Statistics } from "../../components/StatisticalTracker";
 import { Calendr } from "../../common/Calendar";
 import { showToastMessage } from "../../../utils";
+import Profile from "../../components/Profile/Profile";
 
 const routerConfig = createBrowserRouter([
   {
@@ -46,6 +47,16 @@ const routerConfig = createBrowserRouter([
           <ProtectedRoute>
             <NavbarRouteLayout>
               < Statistics />
+            </NavbarRouteLayout>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/profile",
+        element: (
+          <ProtectedRoute>
+            <NavbarRouteLayout>
+              < Profile />
             </NavbarRouteLayout>
           </ProtectedRoute>
         ),
