@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Modal, Form, Input, Button, Typography } from "antd";
 import styled from "styled-components";
 import { HashLoader } from "react-spinners";
+import {useAuth} from '../../common/hooks/useAuth'
+
 
 const { Title } = Typography;
 
@@ -69,6 +71,7 @@ const ModalComponent = ({
   isCurrentDate,
   setIsCurrentDate,
 }) => {
+  const a = useAuth()
   const [form] = Form.useForm();
   const [editMode, setEditMode] = useState(false)
   const [haemoglobin, setHaemo] = useState(null);
@@ -182,7 +185,28 @@ const ModalComponent = ({
   const onFinish = async (values) => {
     try {
       await form.validateFields();
+      const obj = {
+        patient_id : a.patientId,
+        date : date,
+        haemoglobin: values.haemoglobin,
+        systolic : values.systoic,
+        diastolic : values.diastolic,
+        blood_sugar : values.blood_sugar,
+        thyroid : values.thyroid,
+        fetal_movement : values.fetal_movement,
+        bmi : 20
+      }
+      console.log(obj)
       form.resetFields();
+      if(isCurrentDate==="1")
+      {
+      //call CREATE api here
+      console.log("create")
+      }
+      else{
+      // call UPDATE api here
+      console.log("update")
+      }
     } catch (error) {
       console.error("Validation failed:", error);
     }
