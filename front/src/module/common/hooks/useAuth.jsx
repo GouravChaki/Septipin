@@ -90,7 +90,7 @@ export const AuthProvider = ({ children }) => {
         console.log(JSON.stringify(response.data));
         if(response.data?.success == true){
         setUser(response.data?.data || null);
-        setEmail(email || null);
+        setEmail(email);
         }
         res = response;
       })
