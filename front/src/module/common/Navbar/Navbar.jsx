@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { AppBar, Toolbar, Typography, Drawer, List, ListItem , ListItemText, Link, CssBaseline } from '@mui/material';
+import { AppBar, Toolbar, Typography, Drawer, List, ListItem, ListItemText, Link, CssBaseline } from '@mui/material';
 import { GitHub, Twitter, Instagram, Menu } from '@mui/icons-material';
 import { Link as RouterLink } from 'react-router-dom';
 
@@ -27,17 +27,20 @@ const styles = {
   toolbar: {
     display: 'flex',
     justifyContent: 'space-between',
+    padding: '16px',
   },
   hoverEffect: {
     '&:hover': {
-      backgroundColor: '#AB2D2D',
-      color: '#FBBEBE'
+      backgroundColor: '#FFCDD2',  // Change the background color here
+      color: '#FFFFFF',
     },
+    width: '100%',
+    padding: '20px',
   },
   socialIcons: {
     display: 'flex',
     '& > *': {
-      margin: '0 8px',
+      margin: '0 12px',
     },
   },
 };
@@ -54,8 +57,6 @@ const Navbar = () => {
     { to: '/media', label: 'Media' },
     { to: '/nutrition-tracker', label: 'Nutrient Tracker' },
     { to: '/profile', label: 'Profile' },
-    { to: '/login', label: 'Sign In' },
-    { to: '/signup', label: 'Sign Up' },
     { to: '/', label: 'Log out' },
   ];
 
@@ -68,7 +69,7 @@ const Navbar = () => {
             key={item.label}
             component={RouterLink}
             to={item.to}
-            style={{ ...styles.hoverEffect, width: '100%' }}
+            style={{ ...styles.hoverEffect }}
             onClick={handleDrawerToggle}
           >
             <ListItemText primary={item.label} />
