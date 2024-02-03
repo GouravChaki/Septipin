@@ -25,6 +25,7 @@ import React, { useEffect, useState } from "react";
 import { HashLoader } from "react-spinners";
 import { Navigate } from "react-router-dom";
 import { showToastMessage } from "../../../utils";
+import { useNavigate } from "react-router-dom";
 
 // ==============================|| PROFILE 3 - PROFILE ||============================== //
 const CenteredSpinner = styled.div`
@@ -32,10 +33,11 @@ const CenteredSpinner = styled.div`
   margin: auto;
   z-index: 2000;
 `;
-const backendUrl = 'http://localhost:3000'
+const backendUrl = "http://localhost:3000";
 
 const Profile = () => {
   // const { user } = useAuth();
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -47,7 +49,7 @@ const Profile = () => {
     trimester: "",
     doctor_name: "",
     doctor_email: "",
-    profile_status: false
+    profile_status: false,
   });
   const handleChange = (event, field) => {
     setFormData({
@@ -61,17 +63,22 @@ const Profile = () => {
       setIsLoading(true);
       setFormData({
         ...formData,
-        'profile_status': true,
+        ["profile_status"]: true,
       });
       const apiEndpoint = `${backendUrl}/profile_update`;
       console.log(formData);
       await axios.post(apiEndpoint, formData);
       setIsLoading(false);
-      showToastMessage("success", "Profile Successfully Added", 3000,4);
-      Navigate("/");
+      showToastMessage("success", "Profile Successfully Added", 3000, 4);
+      navigate("/");
     } catch (error) {
       console.log(error);
-      showToastMessage("error", "Error Updating Profile:  Please Try Again!", 3000,2);
+      showToastMessage(
+        "error",
+        "Error Updating Profile:  Please Try Again!",
+        3000,
+        2
+      );
       setIsLoading(false);
     }
   };
@@ -135,7 +142,9 @@ const Profile = () => {
               <Grid item md={6} xs={12}>
                 <Box sx={{ minWidth: 120 }}>
                   <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                    <InputLabel id="demo-simple-select-label">
+                      Gender
+                    </InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
@@ -143,7 +152,6 @@ const Profile = () => {
                       label="Gender"
                       onChange={(e) => handleChange(e, "gender")}
                     >
-                      <MenuItem value={"Male"}>Male</MenuItem>
                       <MenuItem value={"Female"}>Female</MenuItem>
                       <MenuItem value={"Others"}>Others</MenuItem>
                     </Select>
@@ -171,14 +179,24 @@ const Profile = () => {
                 />
               </Grid>
               <Grid item md={4} xs={12}>
-                <TextField
-                  id="outlined-basic8"
-                  fullWidth
-                  label="Trimester"
-                  value={formData.trimester}
-                  placeholder="Enter Trimester"
-                  onChange={(e) => handleChange(e, "trimester")}
-                />
+                <Box sx={{ minWidth: 120 }}>
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">
+                      Trimester
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={formData.trimester}
+                      label="Trimester"
+                      onChange={(e) => handleChange(e, "trimester")}
+                    >
+                      <MenuItem value={"1"}>1</MenuItem>
+                      <MenuItem value={"2"}>2</MenuItem>
+                      <MenuItem value={"3"}>3</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Box>
               </Grid>
               <Grid item md={6} xs={12}>
                 <TextField
