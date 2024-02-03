@@ -61,28 +61,75 @@ const Profile = () => {
   const pushData = async () => {
     try {
       setIsLoading(true);
-      setFormData({
-        ...formData,
-        ["profile_status"]: true,
-      });
       const apiEndpoint = `${backendUrl}/profile_update`;
-      console.log(formData);
-      await axios.post(apiEndpoint, formData);
+      console.log("formData.profile_status");
+      console.log(formData.profile_status);
+      if (formData.profile_status) {
+        const res = await axios.post(apiEndpoint, formData);
+        if (res.data.success) {
+          showToastMessage("success", "Profile Successfully Added", 3000, 4);
+          navigate("/");
+        } else {
+          setFormData({
+            name: "",
+            email: "",
+            gender: "",
+            contact: "",
+            gestational_age: "",
+            bmi: "",
+            trimester: "",
+            doctor_name: "",
+            doctor_email: "",
+            profile_status: false,
+          });
+          throw res.data.message;
+        }
+      }
+      setFormData({
+        name: "",
+        email: "",
+        gender: "",
+        contact: "",
+        gestational_age: "",
+        bmi: "",
+        trimester: "",
+        doctor_name: "",
+        doctor_email: "",
+        profile_status: false,
+      });
       setIsLoading(false);
-      showToastMessage("success", "Profile Successfully Added", 3000, 4);
-      navigate("/");
+      showToastMessage("error", "Data Not Filled Completely", 3000, 4);
     } catch (error) {
-      console.log(error);
+      setFormData({
+        name: "",
+        email: "",
+        gender: "",
+        contact: "",
+        gestational_age: "",
+        bmi: "",
+        trimester: "",
+        doctor_name: "",
+        doctor_email: "",
+        profile_status: false,
+      });
       showToastMessage(
         "error",
-        "Error Updating Profile:  Please Try Again!",
+        error,
         3000,
         2
       );
       setIsLoading(false);
     }
   };
-
+  useEffect(() => {
+    const isFilled = Object.values(formData).every((value) => value !== "");
+    if (isFilled) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        profile_status: true,
+      }));
+    }
+  }, [formData]);
   return (
     <>
       {isLoading ? (
