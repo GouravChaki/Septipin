@@ -5,7 +5,6 @@ const Patient = require("../../database/db_schemas/user_schemas/patient_schema")
 module.exports = async (req, res) => {
   try {
     await connect_to_mongo(); //calling the mongodb function for establishing connection
-
     const {
       email,
       name,
@@ -44,7 +43,7 @@ module.exports = async (req, res) => {
       {
         $set: {
           name: name || patient.name,
-          profile_status: profile_status || patient.profile_status,
+          profile_status: profile_status,
           contact: contact || patient.contact,
           gender: gender || patient.gender,
           gestational_age: gestational_age || patient.gestational_age,
