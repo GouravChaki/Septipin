@@ -50,12 +50,7 @@ module.exports= async (req, res) => {
             }
         )
       //if we have successfully entered details into account schema then success message is generated
-      await res.status(200).send({success:true,message:"LOGIN SUCCESS AND TOKEN UPDATED" ,data :{
-        name:account.name,
-        email: account.email,
-        password: account.password,
-        token:token
-      }})
+      await res.status(200).send({success:true,message:"LOGIN SUCCESS AND TOKEN UPDATED" ,account})
     }
 
     catch (error) {  
