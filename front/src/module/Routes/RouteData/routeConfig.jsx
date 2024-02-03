@@ -1,13 +1,13 @@
 import { Login } from "../../Auth/AuthPages/Login";
 import { Signup } from "../../Auth/AuthPages/Signup";
 import { NavbarRouteLayout } from "../../Layouts/NavbarRouteLayout";
-import { Home } from "../../components/Home";
 import { LandingPage } from "../../components/LandingPage";
 import { Outlet, createBrowserRouter } from "react-router-dom";
 import { ProtectedRoute } from "../ProtectedRoute/ProtectedRoute";
 import { Statistics } from "../../components/StatisticalTracker";
 import Profile from "../../components/Profile/Profile";
 import { AuthProvider } from "../../common/hooks/useAuth";
+import Media from "../../components/MediaRecommendations/Media";
 
 const routerConfig = createBrowserRouter([
   {
@@ -27,11 +27,11 @@ const routerConfig = createBrowserRouter([
         ),
       },
       {
-        path: "/home",
+        path: "/media",
         element: (
           <ProtectedRoute>
             <NavbarRouteLayout>
-              <Home />
+              <Media />
             </NavbarRouteLayout>
           </ProtectedRoute>
         ),

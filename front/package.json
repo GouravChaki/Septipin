@@ -21,6 +21,7 @@
     "@mui/icons-material": "^5.15.6",
     "@mui/material": "^5.15.6",
     "@mui/styles": "^5.15.6",
+    "@tabler/icons-react": "^2.47.0",
     "antd": "^5.13.3",
     "axios": "^1.6.0",
     "date-fns": "^3.3.1",
