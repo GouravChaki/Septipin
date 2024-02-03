@@ -2,35 +2,33 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useLocalStorage } from "./useLocalstorage";
 import axios from "axios";
 import qs from "qs";
-import { useNavigate } from "react-router-dom/dist/umd/react-router-dom.development";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const navigate = useNavigate()
   const [user, setUser] = useLocalStorage("user", null);
   const [email, setEmail] = useLocalStorage("email", null);
-  const [patientId , setPatientId] = useState('')
-  const [profileStatus , setProfileStatus] = useState(false)
-  const [stats , setStats] = useState(null)
-  const [severity , setSeverity] = useState(null)
-  useEffect(()=>{
+  const [patientId, setPatientId] = useState("");
+  const [profileStatus, setProfileStatus] = useState(false);
+  const [stats, setStats] = useState(null);
+  const [severity, setSeverity] = useState(null);
+  useEffect(() => {
     //profile fetch api will be called here
-    const xyz=async ()=>{
-      await Profile()
+    const xyz = async () => {
+      await Profile();
+    };
+    if (user || window.localStorage.getItem("user")) {
+      xyz();
+    } else {
+      window.location.href = "/login";
     }
-    if(user && window.localStorage.getItem("user")){
-    xyz()
-    }else{
-      navigate("/login")
-    }
-  },[])
-    const login = async ({ email, password }) => {
+  }, []);
+  const login = async ({ email, password }) => {
     let data = qs.stringify({
       email: email,
       password: password,
     });
-             
+
     let config = {
       method: "post",
       maxBodyLength: Infinity,
@@ -40,30 +38,30 @@ export const AuthProvider = ({ children }) => {
       },
       data: data,
     };
-    let res  = {
-      data:{
+    let res = {
+      data: {
         data: "Life",
-        success:true,
-        profile:true
-      }
-    } 
-      axios
+        success: true,
+        profile: true,
+      },
+    };
+    axios
       .request(config)
       .then((response) => {
         console.log(JSON.stringify(response.data));
-        if(response.data?.success == true){
+        if (response.data?.success == true) {
           setUser(response.data?.account?.token || null);
-          setEmail(email)
-          setPatientId(response.data?.account?._id)
-          setProfileStatus(response.data?.account?.profile_status)
+          setEmail(email);
+          setPatientId(response.data?.account?._id);
+          setProfileStatus(response.data?.account?.profile_status);
           console.log(window.localStorage.getItem("user"));
-          }
+        }
         res = response;
       })
       .catch((error) => {
         console.log(error);
       });
-      return res
+    return res;
   };
 
   const signup = async ({ firstName, lastName, email, password }) => {
@@ -83,75 +81,78 @@ export const AuthProvider = ({ children }) => {
       },
       data: data,
     };
-    let res
+    let res;
     axios
       .request(config)
       .then((response) => {
         console.log(JSON.stringify(response.data));
-        if(response.data?.success == true){
-        setUser(response.data?.data || null);
-        setEmail(email);
+        if (response.data?.success == true) {
+          setUser(response.data?.data || null);
+          setEmail(email);
         }
         res = response;
       })
       .catch((error) => {
         console.log(error);
       });
-      return res
+    return res;
   };
 
   // call this function to sign out logged in user
   const logout = () => {
     setUser(null);
-    window.localStorage.setItem("user",null)
-    navigate("/");
+    window.localStorage.setItem("user", null);
+    window.location.href = "/";
   };
 
-  const Profile= async ()=>{
-      let data = qs.stringify({
-        email: email
-      });
-               
-      let config = {
-        method: "post",
-        maxBodyLength: Infinity,
-        url: `${import.meta.env.VITE_BASE_URL}/patientLogin`,
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        data: data,
-      };
+  const Profile = async () => {
+    let data = qs.stringify({
+      email: email,
+    });
 
-      let res  = {
-        data:{
-          data: "Life",
-          success:true,
-          profile:true
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: `${import.meta.env.VITE_BASE_URL}/patientLogin`,
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      data: data,
+    };
+
+    let res = {
+      data: {
+        data: "Life",
+        success: true,
+        profile: true,
+      },
+    };
+    axios
+      .request(config)
+      .then((response) => {
+        if (response.data?.success == true) {
+          setProfileStatus(response.data.data.patient.profile_status);
+          setPatientId(response.data.data.patient._id);
+          setStats(response.data.data.disease.disease);
+          setSeverity(response.data.data.disease.severity);
+          if (response.data.data.patient.profile_status == false) {
+            window.location.href = "/profile";
+          } else {
+            window.location.href = "/";
+          }
         }
-      } 
-        axios
-        .request(config)
-        .then((response) => {
-          if(response.data?.success == true){
-             setProfileStatus(response.data.data.patient.profile_status)
-             setPatientId(response.data.data.patient._id)
-             setStats(response.data.data.disease.disease)
-             setSeverity(response.data.data.disease.severity)
-             if(response.data.data.patient.profile_status==false){
-              navigate("/profile")
-             }else{
-              navigate("/")
-             }
-            }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-  }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const value = useMemo(
     () => ({
-      isLoggedIn: ((user !== null && email!== null) || (window.localStorage.getItem("user") && window.localStorage.getItem("email"))),
+      isLoggedIn:
+        (user !== null && email !== null) ||
+        (window.localStorage.getItem("user") &&
+          window.localStorage.getItem("email")),
       user,
       login,
       signup,
@@ -160,7 +161,7 @@ export const AuthProvider = ({ children }) => {
       patientId,
       profileStatus,
       stats,
-      severity
+      severity,
     }),
     [user]
   );

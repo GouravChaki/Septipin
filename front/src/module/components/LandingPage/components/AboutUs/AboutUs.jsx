@@ -29,27 +29,27 @@ const styles = {
     },
   },
 };
+import photo1 from '../Images/gourav.png'
+import photo2 from '../Images/yash.png'
+import photo3 from '../Images/gargee.png'
 
 const AboutUs = () => {
   const teamMembers = [
     {
       name: "Gourav Chaki",
-      photo:
-        "https://a.storyblok.com/f/191576/1200x800/215e59568f/round_profil_picture_after_.webp",
+      photo:photo1,
       email: "gouravchaki123@gmail.com",
       linkedIn: "https://www.linkedin.com/in/gourav-chaki-54155b238/",
     },
     {
       name: "Yash Kumar",
-      photo:
-        "https://a.storyblok.com/f/191576/1200x800/215e59568f/round_profil_picture_after_.webp",
+      photo:photo2,
       email: "yashkumar20038@gmail.com",
       linkedIn: "https://www.linkedin.com/in/yash-kumar-6031b7227/",
     },
     {
       name: "Gargee Bhowmick",
-      photo:
-        "https://a.storyblok.com/f/191576/1200x800/215e59568f/round_profil_picture_after_.webp",
+      photo:photo3,
       email: "gargee.bhowmick09@gmail.com",
       linkedIn: "https://www.linkedin.com/in/gargee-bhowmick-b96102154/",
     },
