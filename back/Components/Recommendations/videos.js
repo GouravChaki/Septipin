@@ -4,6 +4,7 @@ const apiUrl = "https://www.googleapis.com/youtube/v3/search";
 const axios = require("axios");
 const maxResults = 100;
 let query;
+
 module.exports = async (req, res) => {
   try {
     const { trimester, type, gestational_age, bmi } = req.body;
@@ -12,16 +13,25 @@ module.exports = async (req, res) => {
       query = "Pregnancy music for mother and unborn baby";
     }
     if (type === "yoga") {
+      let sitn;
+      if (bmi <= "18.5") {
+        sitn = "underweight";
+      }
+      else if (bmi >= "25.0") {
+        sitn = "obese";
+      }
+      else {
+        sitn = "healthy"
+      }
       query =
-        "Yoga / Exercises for pregnant ladies in their" +
+        "Yoga / Exercises for pregnant ladies in their " +
         trimester +
-        "trimester with a gestational age of " +
-        gestational_age +
-        " and a BMI of " +
-        bmi;
+        "th trimester and " +
+        sitn +
+        " body videos";
     }
     if (type === "selfHelp") {
-      query = "Self Help Video for" + trimester + "trimester of pregnancy";
+      query = "Self Help Video for" + trimester + "th trimester of pregnancy";
     }
     response = await axios.get(apiUrl, {
       params: {

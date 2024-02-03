@@ -5,7 +5,7 @@ const { ObjectId } = require("mongodb");
 
 module.exports = async (req, res) => {
   try {
-    await connect_to_mongo(); //calling the mongodb function for establishing connection
+    await connect_to_mongo();
 
     const {
       patient_id,
