@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
     if (user || window.localStorage.getItem("user")) {
       xyz();
     } else {
-      window.location.href = "/login";
+      window.location.href = "http://localhost:5173/login";
     }
   }, []);
   const login = async ({ email, password }) => {
