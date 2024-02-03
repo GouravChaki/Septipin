@@ -54,8 +54,6 @@ const Navbar = () => {
     { to: '/media', label: 'Media' },
     { to: '/nutrition-tracker', label: 'Nutrient Tracker' },
     { to: '/profile', label: 'Profile' },
-    { to: '/login', label: 'Sign In' },
-    { to: '/signup', label: 'Sign Up' },
     { to: '/', label: 'Log out' },
   ];
 

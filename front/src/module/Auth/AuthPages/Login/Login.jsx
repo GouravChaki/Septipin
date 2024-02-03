@@ -41,7 +41,7 @@ function Login() {
         //trigger toastify to display logged in
         showToastMessage("success", "Login success", 2000,2);
         //console.log("Logged in");
-        if(res.data.profile == false){
+        if(a.profileStatus == false){
           showToastMessage("success", "Let us know about you", 5000,3);
           Navigate("/profile"); 
         }else{
