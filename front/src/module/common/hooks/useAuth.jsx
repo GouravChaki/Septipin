@@ -15,12 +15,12 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     //profile fetch api will be called here
     const xyz = async () => {
-      await fetch();
+      await Profile();
     };
     if (user || window.localStorage.getItem("user")) {
       xyz();
     } else {
-      window.location.href = "/login";
+      window.location.href = "http://localhost:5173/login";
     }
   }, []);
   const login = async ({ email, password }) => {
