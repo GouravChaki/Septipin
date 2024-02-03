@@ -48,10 +48,10 @@ module.exports = async (req, res) => {
       }
       return true;
     });
-    const result =
-      (await checkZScore(feature, filteredOldData, newData)) +
-      (await hasSuddenSpike(feature, filteredOldData, newData)) +
-      (await hasCrossedThresold(feature, filteredOldData, newData));
+    const checkZscoreValue= await checkZScore(feature, filteredOldData, newData);
+    const hasSuddenSpikeValue= await hasSuddenSpike(feature, filteredOldData, newData);
+    const hasCrossedThresoldValue= await hasCrossedThresold(feature, filteredOldData, newData);
+    const result = checkZscoreValue + hasSuddenSpikeValue + hasCrossedThresoldValue;
 
     const tempData = await Disease.findOneAndUpdate(
       { patient_id: new ObjectId(patient_id) },
@@ -65,7 +65,12 @@ module.exports = async (req, res) => {
     await res.status(200).send({
       success: true,
       emergency: true,
-      message: result,
+      message: {
+        result: result,
+        zScore: checkZscoreValue,
+        suddenSpike: hasSuddenSpikeValue,
+        thresoldValue: hasCrossedThresoldValue,
+      },
     });
   } catch (err) {
     console.log(err);
