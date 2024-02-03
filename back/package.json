@@ -1,0 +1,15 @@
+{
+  "name": "septipin",
+  "version": "1.0.0",
+  "description": "pregnancy-tracker-app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "Septipin"
+  },
+  "author": "Yash Gargee Gourav",
+  "license": "ISC"
+}
