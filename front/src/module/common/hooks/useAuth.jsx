@@ -17,9 +17,9 @@ export const AuthProvider = ({ children }) => {
   useEffect(()=>{
     //profile fetch api will be called here
     const xyz=async ()=>{
-      await fetch()
+      await Profile()
     }
-    if(user || window.localStorage.getItem("user")){
+    if(user && window.localStorage.getItem("user")){
     xyz()
     }else{
       navigate("/login")
