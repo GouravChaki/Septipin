@@ -21,8 +21,7 @@ export const AuthProvider = ({ children }) => {
     const xyz = async () => {
       await Profile();
     };
-    // if (user || window.localStorage.getItem("user")) {
-      if (user) {
+      if (user || window.localStorage.getItem("user")!=='null') {
       xyz();
     } else {
       navigate("/login");
