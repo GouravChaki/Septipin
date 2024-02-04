@@ -25,7 +25,7 @@ const Statistics = () => {
     <Stats
       style={{ textAlign: "center", paddingLeft: "10px", paddingRight: "10px" }}
     >
-      {res && <LineChart resSeverity={res.data.disease.severity} patientId={res.data.patient._id}/>}
+      {res && <LineChart resStatus={res.data.disease.disease} resSeverity={res.data.disease.severity} patientId={res.data.patient._id}/>}
     </Stats>
   );
 };

@@ -48,43 +48,104 @@ const data = [
   { name: "10", uv: 200, pv: 9800, amt: 2290 },
 ];
 
-const truncatedData = data.slice(0, 5);
 
-const lineChartsData = [
-  {
-    title: "Haemoglobin",
-    value: "haemoglobin",
-    data: truncatedData,
-    org: data,
-  },
-  {
-    title: "Systolic Blood Pressure",
-    value: "systolic",
-    data: truncatedData,
-    org: data,
-  },
-  {
-    title: "Diastolic Blood Pressure",
-    value: "diastolic",
-    data: truncatedData,
-    org: data,
-  },
-  {
-    title: "Blood Sugar",
-    value: "blood_sugar",
-    data: truncatedData,
-    org: data,
-  },
-  { title: "Thyroid", value: "thyroid", data: truncatedData, org: data },
-  {
-    title: "Fetal Movement",
-    value: "fetal_movement",
-    data: truncatedData,
-    org: data,
-  },
-];
+const LineChartsPage = ({ resStatus , resSeverity, patientId }) => {
+  console.log(resStatus)
+  const haemoglobin = resStatus.map(
+    (entry, index) => ({
+      name: (index + 1).toString(),
+      uv: entry?.haemoglobin || 0,
+      pv: index ,  // You can replace this logic with your specific calculation
+      amt: index, // You can replace this logic with your specific calculation
+    })
+  ).filter(entry => entry.uv !== 0);
+  
+  const systolic =resStatus.map(
+    (entry, index) => ({
+      name: (index + 1).toString(),
+      uv: entry?.systolic || 0,
+      pv: index ,  // You can replace this logic with your specific calculation
+      amt: index, // You can replace this logic with your specific calculation
+    })
+  ).filter(entry => entry.uv !== 0);
+  
+  const diastolic = resStatus.map(
+    (entry, index) => ({
+      name: (index + 1).toString(),
+      uv: entry?.diastolic || 0,
+      pv: index ,  // You can replace this logic with your specific calculation
+      amt: index, // You can replace this logic with your specific calculation
+    })
+  ).filter(entry => entry.uv !== 0);
+  
+  
+  const blood_sugar = resStatus.map(
+    (entry, index) => ({
+      name: (index + 1).toString(),
+      uv: entry?.blood_sugar || 0,
+      pv: index ,  // You can replace this logic with your specific calculation
+      amt: index, // You can replace this logic with your specific calculation
+    })
+  ).filter(entry => entry.uv !== 0);
+  
+  const thyroid = resStatus.map(
+    (entry, index) => ({
+      name: (index + 1).toString(),
+      uv: entry?.thyroid || 0,
+      pv: index ,  // You can replace this logic with your specific calculation
+      amt: index, // You can replace this logic with your specific calculation
+    })
+  ).filter(entry => entry.uv !== 0);
+  
+  
+  const fetal_movement = resStatus.map(
+    (entry, index) => ({
+      name: (index + 1).toString(),
+      uv: entry?.fetal_movement || 0,
+      pv: index ,  // You can replace this logic with your specific calculation
+      amt: index, // You can replace this logic with your specific calculation
+    })
+  ).filter(entry => entry.uv !== 0);
+  ;
 
-const LineChartsPage = ({ resSeverity, patientId }) => {
+  const lineChartsData = [
+    {
+      title: "Haemoglobin",
+      value: "haemoglobin",
+      data: haemoglobin.slice(0,haemoglobin.length /2),
+      org: haemoglobin,
+    },
+    {
+      title: "Systolic Blood Pressure",
+      value: "systolic",
+      data: systolic.slice(0,systolic.length /2),
+      org: systolic,
+    },
+    {
+      title: "Diastolic Blood Pressure",
+      value: "diastolic",
+      data: diastolic.slice(0,diastolic.length /2),
+      org: diastolic,
+    },
+    {
+      title: "Blood Sugar",
+      value: "blood_sugar",
+      data: blood_sugar.slice(0,blood_sugar.length /2),
+      org: blood_sugar,
+    },
+    { title: "Thyroid", 
+    value: "thyroid", 
+    data: thyroid.slice(0,thyroid.length /2), 
+    org:thyroid 
+  },
+    {
+      title: "Fetal Movement",
+      value: "fetal_movement",
+      data: fetal_movement.slice(0,fetal_movement.length /2),
+      org: fetal_movement,
+    },
+  ];
+  
   const [drawerStates, setDrawerStates] = useState(false);
   const [modalStates, setModalStates] = useState(
     lineChartsData.map(() => false)
