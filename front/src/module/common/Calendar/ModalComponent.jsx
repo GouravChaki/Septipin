@@ -99,12 +99,12 @@ const ModalComponent = ({
     setIsLoading(false);
 
     form.setFieldsValue({
-      haemoglobin: 23,
-      systolic: 24,
-      diastolic: 25,
-      blood_sugar: 26,
-      thyroid: 27,
-      fetal_movement: 28,
+      haemoglobin: 12,
+      systolic: 120,
+      diastolic: 90,
+      blood_sugar: 126,
+      thyroid: 4,
+      fetal_movement: 10,
     });
   };
 
@@ -226,11 +226,11 @@ const ModalComponent = ({
         const fetalMovementValues = x.data.data.disease.map(
           (entry) => entry?.fetal_movement
         );
-        let hae = await checkCPD(haemoglobinValues, haemoglobin, "hemoglobin");
-        let sys = await checkCPD(systolicValues, systolic, "systolic");
-        let dias = await checkCPD(diastolicValues, diastolic, "diastolic");
-        let sugar = await checkCPD(bloodSugarValues, blood_sugar, "sugar");
-        let thy = await checkCPD(thyroidValues, thyroid, "thyroid");
+        let hae = await checkCPD(formattedDate,haemoglobinValues, haemoglobin, "hemoglobin");
+        let sys = await checkCPD(formattedDate,systolicValues, systolic, "systolic");
+        let dias = await checkCPD(formattedDate,diastolicValues, diastolic, "diastolic");
+        let sugar = await checkCPD(formattedDate,bloodSugarValues, blood_sugar, "sugar");
+        let thy = await checkCPD(formattedDate,thyroidValues, thyroid, "thyroid");
         console.log(hae,sys,dias,sugar,thy)
         const arr = [hae.data?.message , sys.data?.message , dias.data?.message , sugar.data?.message, thy.data?.message]
         const nm = ["Haemoglobin","Systolic Blood Pressure","Diastolic Blood Pressure","Blood Sugar", "Thyroid"]
@@ -272,16 +272,55 @@ const ModalComponent = ({
       } else {
         const apiEndpoint = `${backendUrl}/disease_update`;
         const x = await axios.post(apiEndpoint, obj);
-        setMedicalData(x);
-        if (x.data.success) {
-          showToastMessage(
-            "success",
-            "Medical Statistics Updated Successfully",
-            3000,
-            4
-          );
-        }
-        console.log("update");
+
+        const haemoglobinValues = x.data.data.disease.map(
+          (entry) => entry?.haemoglobin
+        );
+        const systolicValues = x.data.data.disease.map(
+          (entry) => entry?.systolic
+        );
+        const diastolicValues = x.data.data.disease.map(
+          (entry) => entry?.diastolic
+        );
+        const bloodSugarValues = x.data.data.disease.map(
+          (entry) => entry?.blood_sugar
+        );
+        const thyroidValues = x.data.data.disease.map((entry) => entry?.thyroid);
+        const fetalMovementValues = x.data.data.disease.map(
+          (entry) => entry?.fetal_movement
+        );
+        let hae = await checkCPD(haemoglobinValues, haemoglobin, "hemoglobin");
+        let sys = await checkCPD(systolicValues, systolic, "systolic");
+        let dias = await checkCPD(diastolicValues, diastolic, "diastolic");
+        let sugar = await checkCPD(bloodSugarValues, blood_sugar, "sugar");
+        let thy = await checkCPD(thyroidValues, thyroid, "thyroid");
+        const arr = [hae.data?.message , sys.data?.message , dias.data?.message , sugar.data?.message, thy.data?.message]
+        const nm = ["Haemoglobin","Systolic Blood Pressure","Diastolic Blood Pressure","Blood Sugar", "Thyroid"]
+        let resultMessages = "";
+
+        arr.forEach((item, index) => {
+          if ( item && item.result >= 2) {
+            const anomalies = [];
+            // Check for specific conditions and add to anomalies array
+            if (item.zScore >= 2) {
+              anomalies.push("High zScore");
+            }
+            if (item.suddenSpike >= 2) {
+              anomalies.push("Sudden Spike");
+            }
+            if (item.thresoldValue >= 2) {
+              anomalies.push("Threshold Exceeded");
+            }
+      
+            // Generate the message
+            const message =
+              `${nm[index]}: We have detected certain changes in your vitals. ` +
+              `Anomalies found: ${anomalies.join(', ')}`;
+      
+            resultMessages = resultMessages + "                  " + message;
+          }
+        });
+        EmergencyToastMessage('warn',resultMessages)
       }
       setIsLoading(false);
     } catch (error) {

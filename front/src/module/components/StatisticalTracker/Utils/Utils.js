@@ -3,14 +3,15 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export const checkCPD= async (oldData,newData,feature)=>{
+export const checkCPD= async (date,oldData,newData,feature)=>{
   try{
     oldData.pop();
     const newApiEndpoint = `${backendUrl}/cpd`;
     const res = await axios.post(newApiEndpoint, {
         oldData: oldData,
         newData: newData,
-        feature: feature
+        feature: feature,
+        date:date
     });
     return res;
   }catch(error){
