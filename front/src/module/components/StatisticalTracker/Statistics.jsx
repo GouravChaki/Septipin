@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 const Statistics = () => {
   const { stats, user, Profile, severity } = useAuth();
-  const [res,setRes]=useState();
+  const [res, setRes] = useState();
   useEffect(() => {
     const xyz = async () => {
       const a = await Profile();
@@ -25,7 +25,7 @@ const Statistics = () => {
     <Stats
       style={{ textAlign: "center", paddingLeft: "10px", paddingRight: "10px" }}
     >
-      <LineChart resSeverity={res?.data} />
+      {res && <LineChart resSeverity={res.data.disease.severity} patientId={res.data.patient._id}/>}
     </Stats>
   );
 };
