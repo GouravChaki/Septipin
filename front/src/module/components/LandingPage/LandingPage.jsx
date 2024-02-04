@@ -6,7 +6,10 @@ import Services from "./components/Services/Services";
 import Testimonials from "./components/Testimonials/Testimonials";
 import Divider from "./components/Divider/Divider";
 import AboutUs from "./components/AboutUs/AboutUs";
+import { useAuth } from "../../common/hooks/useAuth";
+
 function LandingPage() {
+  
   return (
     <OuterContainer>
       <div className="slider">

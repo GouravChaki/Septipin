@@ -5,12 +5,16 @@ import { showToastMessage } from "../../../utils";
 import { useAuth } from "../../common/hooks/useAuth";
 
 const Statistics = () => {
-  const {stats , severity} = useAuth()
+  const {stats , user , Profile, severity} = useAuth()
   useEffect(() => {
-    console.log('stats')
-    console.log(stats)
-    console.log('severity')
-    console.log(severity)
+    const xyz = async () => {
+      await Profile("/statistics");
+    };
+      if (user) {
+      xyz();
+    } else {
+      navigate("/login");
+    }
     showToastMessage("warn","Please update your profile for accurate results",3000,7)
   }, []);
   return (
