@@ -4,11 +4,8 @@ require("dotenv").config();
 
 module.exports = async (req, res) => {
   try {
-    const email_id = req.body.email_id;
-    const severity_level = req.body.severity_level;
-    const disease = req.body.disease;
-    const cause = req.body.cause;
-
+    const email_id = req.body.email_id || 'gouravchaki123@gmail.com';
+    const msg = req.body.message
     const transporter = nodemailer.createTransport({
       service: "outlook",
       auth: {
@@ -23,8 +20,8 @@ module.exports = async (req, res) => {
     await transporter.sendMail({
       from: `"Gourav Chaki" ${process.env.EMAIL_ID}`,
       to: `${email_id}`,
-      subject: `${severity_level} - Urgent Medical Attention Required`,
-      text: emailText,
+      subject: `Urgent Medical Attention Required`,
+      text: msg,
     }, (error, info) => {
       if (error) {
         transporter.close();

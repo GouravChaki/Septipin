@@ -47,9 +47,4 @@ module.exports= async (req, res) => {
       //if some error is encountered during account schema entrance then error message is generated
       res.status(200).send({success:false,message :"ERROR IN ACCOUNT DETAILS CREATION" , data : error})
     }
-    finally {
-      //database is closed after it has been used
-      await mongoose.disconnect();
-      // console.log('Disconnected from the database')
-    }
 }

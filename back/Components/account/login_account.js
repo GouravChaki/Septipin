@@ -58,9 +58,4 @@ module.exports= async (req, res) => {
       console.log(error)
       res.status(200).send({success:false,message :"ERROR IN ACCOUNT LOGIN" , data : error})
     }
-    finally {
-      //database is closed after it has been used
-      await mongoose.disconnect();
-      // console.log('Disconnected from the database')
-    }
 }

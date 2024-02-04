@@ -37,7 +37,7 @@ module.exports = async (req, res) => {
   try {
     await connect_to_mongo(); //calling the mongodb function for establishing connection
 
-    const { patient_id, feature, oldData, newData } = req.body;
+    const { patient_id, feature, oldData, newData, date } = req.body;
     const { low, high, spike } = thresold[feature];
     console.log(thresold[feature]);
     const filteredOldData = oldData.filter((entry, index) => {
@@ -48,13 +48,26 @@ module.exports = async (req, res) => {
       }
       return true;
     });
-    const checkZscoreValue= await checkZScore(feature, filteredOldData, newData);
-    const hasSuddenSpikeValue= await hasSuddenSpike(feature, filteredOldData, newData);
-    const hasCrossedThresoldValue= await hasCrossedThresold(feature, filteredOldData, newData);
-    const result = checkZscoreValue + hasSuddenSpikeValue + hasCrossedThresoldValue;
+    const checkZscoreValue = await checkZScore(
+      feature,
+      filteredOldData,
+      newData
+    );
+    const hasSuddenSpikeValue = await hasSuddenSpike(
+      feature,
+      filteredOldData,
+      newData
+    );
+    const hasCrossedThresoldValue = await hasCrossedThresold(
+      feature,
+      filteredOldData,
+      newData
+    );
+    const result =
+      checkZscoreValue + hasSuddenSpikeValue + hasCrossedThresoldValue;
 
     const tempData = await Disease.findOneAndUpdate(
-      { patient_id: new ObjectId(patient_id) },
+      { patient_id: new ObjectId(patient_id), "disease.date": new Date(date) },
       {
         $set: {
           [`severity.${feature}`]: result,

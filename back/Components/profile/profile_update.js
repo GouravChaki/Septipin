@@ -70,9 +70,5 @@ module.exports = async (req, res) => {
       message: "ERROR IN PATIENT DETAILS UPDATION",
       data: error,
     });
-  } finally {
-    //database is closed after it has been used
-    await mongoose.disconnect();
-    // console.log('Disconnected from the database')
   }
 };
