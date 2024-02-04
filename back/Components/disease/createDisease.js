@@ -18,7 +18,6 @@ module.exports = async (req, res) => {
       fetal_movement,
       bmi,
     } = req.body;
-
     const existingEntry = await Disease.findOne({
       patient_id: new ObjectId(patient_id),
       "disease.date": new Date(date),

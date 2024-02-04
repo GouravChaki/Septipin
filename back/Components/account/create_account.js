@@ -45,7 +45,6 @@ module.exports= async (req, res) => {
 
     catch (error) {  
       //if some error is encountered during account schema entrance then error message is generated
-      console.log(error)
       res.status(200).send({success:false,message :"ERROR IN ACCOUNT DETAILS CREATION" , data : error})
     }
     finally {

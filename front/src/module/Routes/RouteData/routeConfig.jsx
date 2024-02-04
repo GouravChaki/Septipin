@@ -29,11 +29,11 @@ const routerConfig = createBrowserRouter([
       {
         path: "/media",
         element: (
-          // <ProtectedRoute>
-          //   <NavbarRouteLayout>
+          <ProtectedRoute>
+            <NavbarRouteLayout>
               <Media />
-          //   </NavbarRouteLayout>
-          // </ProtectedRoute>
+            </NavbarRouteLayout>
+          </ProtectedRoute>
         ),
       },
       {

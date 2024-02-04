@@ -66,9 +66,7 @@ const Navbar = () => {
   const navLinks = [
     { to: "/statistics", label: "Statistical Tracker" },
     { to: "/media", label: "Media" },
-    { to: "/nutrition-tracker", label: "Nutrient Tracker" },
     { to: "/profile", label: "Profile" },
-    // { to: "/", label: "Log out"},
   ];
 
   const drawer = (

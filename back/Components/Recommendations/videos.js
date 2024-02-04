@@ -1,13 +1,13 @@
 // const { google } = require("googleapis");
-const apiKey = "AIzaSyD4mrT6_Sp2mjcFyRoqG1H33ehBtlYrmLw";
+const apiKey = "AIzaSyDKJtn6nAIjqvx5bKWDGftBTPJUXI4_FW0";
 const apiUrl = "https://www.googleapis.com/youtube/v3/search";
 const axios = require("axios");
-const maxResults = 100;
 let query;
 
 module.exports = async (req, res) => {
   try {
     const { trimester, type, gestational_age, bmi } = req.body;
+    console.log(req.body)
     let response;
     if (type === "music") {
       query = "Pregnancy music for mother and unborn baby";
@@ -39,7 +39,6 @@ module.exports = async (req, res) => {
         q: query,
         part: "snippet",
         type: "video",
-        maxResults,
       },
     });
     await res.status(200).send({
