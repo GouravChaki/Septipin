@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Modal, Form, Input, Button, Typography } from "antd";
 import styled from "styled-components";
 import { HashLoader } from "react-spinners";
-import {useAuth} from '../../common/hooks/useAuth'
-
+import { useAuth } from "../../common/hooks/useAuth";
+import axios from "axios";
+import { showToastMessage } from "../../../utils";
+import { EmergencyToastMessage, checkCPD } from "../../components/StatisticalTracker/Utils/Utils";
 
 const { Title } = Typography;
 
@@ -63,6 +65,7 @@ const CenteredSpinner = styled.div`
   align-items: center;
   z-index: 2000;
 `;
+const backendUrl = "http://localhost:3000";
 
 const ModalComponent = ({
   isOpen,
@@ -70,16 +73,17 @@ const ModalComponent = ({
   date,
   isCurrentDate,
   setIsCurrentDate,
+  patientId,
 }) => {
-  const a = useAuth()
   const [form] = Form.useForm();
-  const [editMode, setEditMode] = useState(false)
+  const [editMode, setEditMode] = useState(false);
   const [haemoglobin, setHaemo] = useState(null);
   const [systolic, setSys] = useState(null);
   const [diastolic, setDias] = useState(null);
   const [blood_sugar, setSugar] = useState(null);
   const [thyroid, setTsh] = useState(null);
   const [fetal_movement, setFmove] = useState(null);
+  const [medicalData, setMedicalData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const checkData = async () => {
@@ -104,7 +108,7 @@ const ModalComponent = ({
 
   useEffect(() => {
     if (isCurrentDate === "2") {
-      setEditMode(true)
+      setEditMode(true);
       setIsLoading(true);
       const fillData = async () => {
         await checkData();
@@ -184,30 +188,75 @@ const ModalComponent = ({
 
   const onFinish = async (values) => {
     try {
+      setIsLoading(true);
+      const originalDate = new Date(date);
+      const formattedDate = originalDate.toISOString();
+
       await form.validateFields();
       const obj = {
-        patient_id : a.patientId,
-        date : date,
+        patient_id: patientId,
+        date: formattedDate,
         haemoglobin: values.haemoglobin,
-        systolic : values.systoic,
-        diastolic : values.diastolic,
-        blood_sugar : values.blood_sugar,
-        thyroid : values.thyroid,
-        fetal_movement : values.fetal_movement,
-        bmi : 20
-      }
-      console.log(obj)
+        systolic: values.systolic,
+        diastolic: values.diastolic,
+        blood_sugar: values.blood_sugar,
+        thyroid: values.thyroid,
+        fetal_movement: values.fetal_movement,
+        bmi: 20,
+      };
       form.resetFields();
-      if(isCurrentDate==="1")
-      {
-      //call CREATE api here
-      console.log("create")
+      if (isCurrentDate === "1") {
+        const apiEndpoint = `${backendUrl}/disease_create`;
+        const x = await axios.post(apiEndpoint, obj);
+        const haemoglobinValues = x.data.data.disease.map(
+          (entry) => entry?.haemoglobin
+        );
+        const systolicValues = x.data.data.disease.map(
+          (entry) => entry?.systolic
+        );
+        const diastolicValues = x.data.data.disease.map(
+          (entry) => entry?.diastolic
+        );
+        const bloodSugarValues = x.data.data.disease.map(
+          (entry) => entry?.blood_sugar
+        );
+        const thyroidValues = x.data.data.disease.map((entry) => entry?.thyroid);
+        const fetalMovementValues = x.data.data.disease.map(
+          (entry) => entry?.fetal_movement
+        );
+        let hae = await checkCPD(haemoglobinValues, haemoglobin, "hemoglobin");
+        let sys = await checkCPD(systolicValues, systolic, "systolic");
+        let dias = await checkCPD(diastolicValues, diastolic, "diastolic");
+        let sugar = await checkCPD(bloodSugarValues, blood_sugar, "sugar");
+        let thy = await checkCPD(thyroidValues, thyroid, "thyroid");
+        console.log(hae)
+        EmergencyToastMessage('warn',"Threat")
+        setMedicalData(x);
+        if (x.data.data.success) {
+          showToastMessage(
+            "success",
+            "Medical Statistics Created Successfully",
+            3000,
+            4
+          );
+        }
+      } else {
+        const apiEndpoint = `${backendUrl}/disease_update`;
+        const x = await axios.post(apiEndpoint, obj);
+        setMedicalData(x);
+        if (x.data.success) {
+          showToastMessage(
+            "success",
+            "Medical Statistics Updated Successfully",
+            3000,
+            4
+          );
+        }
+        console.log("update");
       }
-      else{
-      // call UPDATE api here
-      console.log("update")
-      }
+      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       console.error("Validation failed:", error);
     }
   };
@@ -263,7 +312,7 @@ const ModalComponent = ({
         <CuteSubmitButton
           type="primary"
           onClick={() => {
-            setEditMode(false)
+            setEditMode(false);
           }}
           block
         >
@@ -327,10 +376,10 @@ const ModalComponent = ({
                         <StyledInput
                           type="number"
                           value={feature.value}
-
                           onChange={(e) => {
                             if (!editMode) {
-                              const newValue = parseInt(e.target.value, 10) || null;
+                              const newValue =
+                                parseInt(e.target.value, 10) || null;
                               feature.function(newValue);
                             }
                           }}

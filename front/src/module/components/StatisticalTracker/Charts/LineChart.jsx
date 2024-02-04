@@ -18,7 +18,6 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import ModalComponent from "../../../common/Calendar/ModalComponent";
-import { useAuth } from "../../../common/hooks/useAuth";
 
 const severityColors = {
   0: "#DAF7A6",
@@ -85,10 +84,7 @@ const lineChartsData = [
   },
 ];
 
-const LineChartsPage = (props) => {
-  const { severity } = useAuth();
-  console.log("resSeverity");
-  console.log(props);
+const LineChartsPage = ({ resSeverity, patientId }) => {
   const [drawerStates, setDrawerStates] = useState(false);
   const [modalStates, setModalStates] = useState(
     lineChartsData.map(() => false)
@@ -122,8 +118,8 @@ const LineChartsPage = (props) => {
   };
 
   const getChartValue = (chart) => {
-    if (severity && severity[chart.value]) {
-      return severity[chart.value];
+    if (resSeverity && resSeverity[chart.value]) {
+      return resSeverity[chart.value];
     }
     return null;
   };
@@ -144,7 +140,7 @@ const LineChartsPage = (props) => {
             <ChartCard elevation={5}>
               <Paper
                 style={{
-                  backgroundColor: getColor(getChartValue(chart)),
+                  backgroundColor: getColor(getChartValue(chart)) || '#DAF7A6',
                   padding: "20px",
                   borderRadius: "8px",
                   marginBottom: "20px",
@@ -218,6 +214,7 @@ const LineChartsPage = (props) => {
         isOpen={modalIsOpen}
         onRequestClose={onRequestClose}
         date={date}
+        patientId={patientId}
         isCurrentDate={isCurrentDate}
         setIsCurrentDate={setIsCurrentDate}
       />
