@@ -40,14 +40,15 @@ const Calendr = (props) => {
           tileDisabled={tileDisabled}
           style={customTileStyle} // Apply custom style for the calendar
           onClickDay={(date) => {
-            if (CurrentDate(date)) {
+            // if (CurrentDate(date)) {
               props.setIsCurrentDate('1')
               //props.openModal();
-            } else {
-              // Open your OtherComponent or perform other actions
-              props.setIsCurrentDate('2')
-              //props.openEditModal();
-            }
+            // }
+            // else {
+            //   // Open your OtherComponent or perform other actions
+            //   props.setIsCurrentDate('2')
+            //   //props.openEditModal();
+            // }
             props.openModal()
           }}
         />

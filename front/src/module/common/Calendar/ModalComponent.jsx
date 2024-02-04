@@ -210,7 +210,7 @@ const ModalComponent = ({
         bmi: 20,
       };
       form.resetFields();
-      if (isCurrentDate === "1") {
+      // if (isCurrentDate === "1") {
         const apiEndpoint = `${backendUrl}/disease_create`;
         const x = await axios.post(apiEndpoint, obj);
         const haemoglobinValues = x.data.data.disease.map(
@@ -277,59 +277,59 @@ const ModalComponent = ({
             4
           );
         }
-      } else {
-        const apiEndpoint = `${backendUrl}/disease_update`;
-        const x = await axios.post(apiEndpoint, obj);
+      // } else {
+      //   const apiEndpoint = `${backendUrl}/disease_update`;
+      //   const x = await axios.post(apiEndpoint, obj);
 
-        const haemoglobinValues = await x.data?.data?.disease.map(
-          (entry) => entry?.haemoglobin
-        );
-        const systolicValues = await x.data?.data?.disease.map(
-          (entry) => entry?.systolic
-        );
-        const diastolicValues = await x.data?.data?.disease.map(
-          (entry) => entry?.diastolic
-        );
-        const bloodSugarValues = await x.data?.data?.disease.map(
-          (entry) => entry?.blood_sugar
-        );
-        const thyroidValues = await x.data.data.disease.map((entry) => entry?.thyroid);
-        const fetalMovementValues = await x.data.data.disease.map(
-          (entry) => entry?.fetal_movement
-        );
-        let hae = await checkCPD(patientId,formattedDate,haemoglobinValues, haemoglobin, "hemoglobin");
-        let sys = await checkCPD(patientId,formattedDate,systolicValues, systolic, "systolic");
-        let dias = await checkCPD(patientId,formattedDate,diastolicValues, diastolic, "diastolic");
-        let sugar = await checkCPD(patientId,formattedDate,bloodSugarValues, blood_sugar, "sugar");
-        let thy = await checkCPD(patientId,formattedDate,thyroidValues, thyroid, "thyroid");
-        const arr = [hae.data?.message , sys.data?.message , dias.data?.message , sugar.data?.message, thy.data?.message]
-        const nm = ["Haemoglobin","Systolic Blood Pressure","Diastolic Blood Pressure","Blood Sugar", "Thyroid"]
-        let resultMessages = "";
+      //   const haemoglobinValues = await x.data?.data?.disease.map(
+      //     (entry) => entry?.haemoglobin
+      //   );
+      //   const systolicValues = await x.data?.data?.disease.map(
+      //     (entry) => entry?.systolic
+      //   );
+      //   const diastolicValues = await x.data?.data?.disease.map(
+      //     (entry) => entry?.diastolic
+      //   );
+      //   const bloodSugarValues = await x.data?.data?.disease.map(
+      //     (entry) => entry?.blood_sugar
+      //   );
+      //   const thyroidValues = await x.data.data.disease.map((entry) => entry?.thyroid);
+      //   const fetalMovementValues = await x.data.data.disease.map(
+      //     (entry) => entry?.fetal_movement
+      //   );
+      //   let hae = await checkCPD(patientId,formattedDate,haemoglobinValues, haemoglobin, "hemoglobin");
+      //   let sys = await checkCPD(patientId,formattedDate,systolicValues, systolic, "systolic");
+      //   let dias = await checkCPD(patientId,formattedDate,diastolicValues, diastolic, "diastolic");
+      //   let sugar = await checkCPD(patientId,formattedDate,bloodSugarValues, blood_sugar, "sugar");
+      //   let thy = await checkCPD(patientId,formattedDate,thyroidValues, thyroid, "thyroid");
+      //   const arr = [hae.data?.message , sys.data?.message , dias.data?.message , sugar.data?.message, thy.data?.message]
+      //   const nm = ["Haemoglobin","Systolic Blood Pressure","Diastolic Blood Pressure","Blood Sugar", "Thyroid"]
+      //   let resultMessages = "";
 
-        arr.forEach((item, index) => {
-          if ( item && item.result >= 2) {
-            const anomalies = [];
-            // Check for specific conditions and add to anomalies array
-            if (item.zScore >= 2) {
-              anomalies.push("High zScore");
-            }
-            if (item.suddenSpike >= 2) {
-              anomalies.push("Sudden Spike");
-            }
-            if (item.thresoldValue >= 2) {
-              anomalies.push("Threshold Exceeded");
-            }
+      //   arr.forEach((item, index) => {
+      //     if ( item && item.result >= 2) {
+      //       const anomalies = [];
+      //       // Check for specific conditions and add to anomalies array
+      //       if (item.zScore >= 2) {
+      //         anomalies.push("High zScore");
+      //       }
+      //       if (item.suddenSpike >= 2) {
+      //         anomalies.push("Sudden Spike");
+      //       }
+      //       if (item.thresoldValue >= 2) {
+      //         anomalies.push("Threshold Exceeded");
+      //       }
       
-            // Generate the message
-            const message =
-              `${nm[index]}: We have detected certain changes in your vitals. ` +
-              `Anomalies found: ${anomalies.join(', ')}`;
+      //       // Generate the message
+      //       const message =
+      //         `${nm[index]}: We have detected certain changes in your vitals. ` +
+      //         `Anomalies found: ${anomalies.join(', ')}`;
       
-            resultMessages = resultMessages + "                  " + message;
-          }
-        });
-        EmergencyToastMessage('warn',resultMessages)
-      }
+      //       resultMessages = resultMessages + "                  " + message;
+      //     }
+      //   });
+      //   EmergencyToastMessage('warn',resultMessages)
+      // }
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
@@ -383,7 +383,7 @@ const ModalComponent = ({
   };
 
   const renderActionButton = () => {
-    if (editMode) {
+    if (false) {
       return (
         <CuteSubmitButton
           type="primary"
@@ -453,13 +453,12 @@ const ModalComponent = ({
                           type="number"
                           value={feature.value}
                           onChange={(e) => {
-                            if (!editMode) {
+                            if (true) {
                               const newValue =
                                 parseInt(e.target.value, 10) || null;
                               feature.function(newValue);
                             }
                           }}
-                          disabled={editMode}
                         />
                       </Form.Item>
                       {form.getFieldError(feature.name) &&
