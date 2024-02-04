@@ -1,25 +1,31 @@
 import React, { useState, useRef, useEffect } from "react";
 import { LineChart } from "./Charts";
 import { Stats } from "./sTracker.styles";
-import { showToastMessage } from "../../../utils"; 
+import { showToastMessage } from "../../../utils";
 import { useAuth } from "../../common/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const Statistics = () => {
-  const {stats , user , Profile, severity} = useAuth()
+  const { stats, user, Profile, severity } = useAuth();
+  const [res,setRes]=useState();
   useEffect(() => {
     const xyz = async () => {
-      await Profile("/statistics");
+      const a = await Profile();
+      setRes(a);
     };
-      if (user) {
-      xyz();
-    } else {
-      navigate("/login");
-    }
-    showToastMessage("warn","Please update your profile for accurate results",3000,7)
+    xyz();
+    showToastMessage(
+      "warn",
+      "Please update your profile for accurate results",
+      3000,
+      7
+    );
   }, []);
   return (
-    < Stats  style={{ textAlign: 'center', paddingLeft: '10px', paddingRight: '10px' }}>
-    <LineChart />
+    <Stats
+      style={{ textAlign: "center", paddingLeft: "10px", paddingRight: "10px" }}
+    >
+      <LineChart resSeverity={res?.data} />
     </Stats>
   );
 };

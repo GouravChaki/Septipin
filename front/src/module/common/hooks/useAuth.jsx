@@ -13,8 +13,8 @@ export const AuthProvider = ({ children }) => {
   const [email, setEmail] = useLocalStorage("email", null);
   const [patientId, setPatientId] = useState("");
   const [profileStatus, setProfileStatus] = useState(false);
-  const [stats, setStats] = useState(null);
-  const [severity, setSeverity] = useState(null);
+  const [stats, setStats] = useState({});
+  const [severity, setSeverity] = useState({});
   const navigate = useNavigate();
   const location = useLocation();
   useEffect(() => {
@@ -28,16 +28,6 @@ export const AuthProvider = ({ children }) => {
       navigate("/login");
     }
   }, []);
-
-  // useEffect(() => {
-  //   const xyz = async (url) => {
-  //    await Profile(url)
-  //   };
-
-  //   const url = location.pathname;
-  //   xyz(url);
-
-  // }, [location]);
 
   const login = async ({ email, password }) => {
     try {
@@ -86,11 +76,10 @@ export const AuthProvider = ({ children }) => {
     navigate("/login");
   };
 
-  const Profile = async (url) => {
+  const Profile = async () => {
     try {
       const apiEndpoint = `${backendUrl}/profile_fetch`;
       const res = await axios.post(apiEndpoint, { email: email });
-      console.log(res.data);
       if (res.data.success) {
         setProfileStatus(res.data?.data?.patient.profile_status);
         setPatientId(res.data?.data?.patient._id);
@@ -98,9 +87,8 @@ export const AuthProvider = ({ children }) => {
         setSeverity(res.data?.data?.disease.severity);
         if (res.data?.data?.patient.profile_status == false) {
           navigate("/profile");
-        } else {
-          navigate(url);
         }
+        return res.data;
       }
     } catch (error) {
       console.log(error);

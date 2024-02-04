@@ -21,19 +21,19 @@ import ModalComponent from "../../../common/Calendar/ModalComponent";
 import { useAuth } from "../../../common/hooks/useAuth";
 
 const severityColors = {
-  '0': "#DAF7A6",
-  '1': "#FFC300",
-  '2': "#EC5800",
-  '3': "#D70040",
-  '4' : "#7F00FF"
+  0: "#DAF7A6",
+  1: "#FFC300",
+  2: "#EC5800",
+  3: "#D70040",
+  4: "#7F00FF",
 };
 
 const getColor = (value) => {
-  if (value == 0) return severityColors['0'];
-  else if (value ==1) return severityColors['1'];
-  else if (value ==2) return severityColors['2'];
-  else if (value ==3) return severityColors['3'];
-  else if (value ==4) return severityColors['4']
+  if (value == 0) return severityColors["0"];
+  else if (value == 1) return severityColors["1"];
+  else if (value == 2) return severityColors["2"];
+  else if (value == 3) return severityColors["3"];
+  else if (value == 4) return severityColors["4"];
 };
 
 const data = [
@@ -52,25 +52,51 @@ const data = [
 const truncatedData = data.slice(0, 5);
 
 const lineChartsData = [
-  { title: "Haemoglobin",value: "haemoglobin", data: truncatedData, org: data },
-  { title: "Systolic Blood Pressure",value : "systolic", data: truncatedData, org: data },
-  { title: "Diastolic Blood Pressure",value : "diastolic" ,data: truncatedData, org: data },
-  { title: "Blood Sugar", value : "blood_sugar" , data: truncatedData, org: data },
-  { title: "Thyroid", value : "thyroid" , data: truncatedData, org: data },
-  { title: "Fetal Movement", value: "fetal_movement" , data: truncatedData, org: data },
+  {
+    title: "Haemoglobin",
+    value: "haemoglobin",
+    data: truncatedData,
+    org: data,
+  },
+  {
+    title: "Systolic Blood Pressure",
+    value: "systolic",
+    data: truncatedData,
+    org: data,
+  },
+  {
+    title: "Diastolic Blood Pressure",
+    value: "diastolic",
+    data: truncatedData,
+    org: data,
+  },
+  {
+    title: "Blood Sugar",
+    value: "blood_sugar",
+    data: truncatedData,
+    org: data,
+  },
+  { title: "Thyroid", value: "thyroid", data: truncatedData, org: data },
+  {
+    title: "Fetal Movement",
+    value: "fetal_movement",
+    data: truncatedData,
+    org: data,
+  },
 ];
 
-const LineChartsPage = () => {
+const LineChartsPage = (props) => {
   const { severity } = useAuth();
+  console.log("resSeverity");
+  console.log(props);
   const [drawerStates, setDrawerStates] = useState(false);
-  console.log(severity)
   const [modalStates, setModalStates] = useState(
     lineChartsData.map(() => false)
   );
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedChartData, setSelectedChartData] = useState(null);
   const [date, setDate] = useState(null);
-  const [isCurrentDate, setIsCurrentDate] = useState('0');
+  const [isCurrentDate, setIsCurrentDate] = useState("0");
 
   const toggleDrawer = () => {
     setDrawerStates(!drawerStates);
@@ -92,7 +118,7 @@ const LineChartsPage = () => {
 
   const onRequestClose = () => {
     setModalIsOpen(false);
-    setIsCurrentDate('0');
+    setIsCurrentDate("0");
   };
 
   const getChartValue = (chart) => {
