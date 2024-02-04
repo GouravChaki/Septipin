@@ -5,7 +5,10 @@ import { HashLoader } from "react-spinners";
 import { useAuth } from "../../common/hooks/useAuth";
 import axios from "axios";
 import { showToastMessage } from "../../../utils";
-import { EmergencyToastMessage, checkCPD } from "../../components/StatisticalTracker/Utils/Utils";
+import {
+  EmergencyToastMessage,
+  checkCPD,
+} from "../../components/StatisticalTracker/Utils/Utils";
 import { useNavigate } from "react-router-dom/dist/umd/react-router-dom.development";
 
 const { Title } = Typography;
@@ -76,7 +79,7 @@ const ModalComponent = ({
   setIsCurrentDate,
   patientId,
 }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [form] = Form.useForm();
   const [editMode, setEditMode] = useState(false);
   const [haemoglobin, setHaemo] = useState(null);
@@ -222,7 +225,9 @@ const ModalComponent = ({
         const bloodSugarValues = x.data.data.disease.map(
           (entry) => entry?.blood_sugar
         );
-        const thyroidValues = x.data.data.disease.map((entry) => entry?.thyroid);
+        const thyroidValues = x.data.data.disease.map(
+          (entry) => entry?.thyroid
+        );
         const fetalMovementValues = x.data.data.disease.map(
           (entry) => entry?.fetal_movement
         );
@@ -231,13 +236,25 @@ const ModalComponent = ({
         let dias = await checkCPD(diastolicValues, diastolic, "diastolic");
         let sugar = await checkCPD(bloodSugarValues, blood_sugar, "sugar");
         let thy = await checkCPD(thyroidValues, thyroid, "thyroid");
-        console.log(hae,sys,dias,sugar,thy)
-        const arr = [hae.data?.message , sys.data?.message , dias.data?.message , sugar.data?.message, thy.data?.message]
-        const nm = ["Haemoglobin","Systolic Blood Pressure","Diastolic Blood Pressure","Blood Sugar", "Thyroid"]
+        console.log(hae, sys, dias, sugar, thy);
+        const arr = [
+          hae.data?.message,
+          sys.data?.message,
+          dias.data?.message,
+          sugar.data?.message,
+          thy.data?.message,
+        ];
+        const nm = [
+          "Haemoglobin",
+          "Systolic Blood Pressure",
+          "Diastolic Blood Pressure",
+          "Blood Sugar",
+          "Thyroid",
+        ];
         let resultMessages = "";
 
         arr.forEach((item, index) => {
-          if ( item && item.result >= 2) {
+          if (item && item.result >= 2) {
             const anomalies = [];
             // Check for specific conditions and add to anomalies array
             if (item.zScore >= 2) {
@@ -249,18 +266,21 @@ const ModalComponent = ({
             if (item.thresoldValue >= 2) {
               anomalies.push("Threshold Exceeded");
             }
-      
+
             // Generate the message
             const message =
               `${nm[index]}: We have detected certain changes in your vitals. ` +
-              `Anomalies found: ${anomalies.join(', ')}`;
-      
+              `Anomalies found: ${anomalies.join(", ")}`;
+
             resultMessages = resultMessages + "                  " + message;
           }
         });
-        EmergencyToastMessage('warn',resultMessages)
+
+        EmergencyToastMessage("warn", resultMessages);
         setMedicalData(x);
-        onRequestClose()
+        const EmailEndpoint = `${backendUrl}/email`;
+        await axios.post(apiEndpoint, { message: resultMessages });
+        onRequestClose();
         if (x.data.data.success) {
           showToastMessage(
             "success",
