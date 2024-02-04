@@ -281,20 +281,20 @@ const ModalComponent = ({
         const apiEndpoint = `${backendUrl}/disease_update`;
         const x = await axios.post(apiEndpoint, obj);
 
-        const haemoglobinValues = x.data.data.disease.map(
+        const haemoglobinValues = await x.data?.data?.disease.map(
           (entry) => entry?.haemoglobin
         );
-        const systolicValues = x.data.data.disease.map(
+        const systolicValues = await x.data?.data?.disease.map(
           (entry) => entry?.systolic
         );
-        const diastolicValues = x.data.data.disease.map(
+        const diastolicValues = await x.data?.data?.disease.map(
           (entry) => entry?.diastolic
         );
-        const bloodSugarValues = x.data.data.disease.map(
+        const bloodSugarValues = await x.data?.data?.disease.map(
           (entry) => entry?.blood_sugar
         );
-        const thyroidValues = x.data.data.disease.map((entry) => entry?.thyroid);
-        const fetalMovementValues = x.data.data.disease.map(
+        const thyroidValues = await x.data.data.disease.map((entry) => entry?.thyroid);
+        const fetalMovementValues = await x.data.data.disease.map(
           (entry) => entry?.fetal_movement
         );
         let hae = await checkCPD(patientId,formattedDate,haemoglobinValues, haemoglobin, "hemoglobin");
