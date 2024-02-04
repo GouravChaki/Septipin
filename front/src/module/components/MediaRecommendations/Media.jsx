@@ -1,129 +1,52 @@
-// material-ui
+import React , { useState } from "react";
 import { Grid, Typography } from "@mui/material";
-
-// assets
-import {
-  IconShare,
-  IconAccessPoint,
-  IconCircles,
-  IconCreditCard,
-} from "@tabler/icons-react";
-
-// ==============================|| ANALYTICS DASHBOARD ||============================== //
+import ReactPlayer from "react-player/lazy";
 
 const Media = () => {
+  const [selectedVideo, setSelectedVideo] = useState(null);
+
+  const handleVideoClick = (videoUrl) => {
+    setSelectedVideo(videoUrl);
+  };
+
+  const videoList = [
+    "https://www.youtube.com/watch?v=oUFJJNQGwhk",
+    "https://www.youtube.com/watch?v=jNgP6d9HraI",
+    "https://www.youtube.com/watch?v=jNgP6d9HraI",
+    "https://www.youtube.com/watch?v=jNgP6d9HraI",
+    "https://www.youtube.com/watch?v=jNgP6d9HraI",
+    "https://www.youtube.com/watch?v=jNgP6d9HraI",
+    "https://www.youtube.com/watch?v=jNgP6d9HraI",
+    // Add more video URLs as needed
+  ];
 
   return (
-    <Grid container spacing={3}>
+    <Grid container spacing={3} sx={{ mt: 5, pl: 10, pr: 10 }}>
       <Grid item xs={12} lg={8} md={6}>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            HELLO
-          </Grid>
-          <Grid item xs={12} lg={6}>
-            A
-          </Grid>
-          <Grid item xs={12} lg={6}>
-            B
-          </Grid>
-          <Grid item xs={12}>
-            C
-          </Grid>
-        </Grid>
+        <Typography variant="h5" gutterBottom>
+          Media
+        </Typography>
+        <ReactPlayer url={videoList[0]} width="100%" height="100%" />
       </Grid>
       <Grid item xs={12} lg={4} md={6}>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <Grid container alignItems="center" spacing={0}>
-              <Grid item xs={12} sm={6}>
-                <Grid
-                  container
-                  alignItems="center"
-                  spacing={1}
-                >
-                  <Grid item>
-                    <IconShare stroke={1.5} />
-                  </Grid>
-                  <Grid item sm zeroMinWidth>
-                    <Typography variant="h5" align="center">
-                      1000
-                    </Typography>
-                    <Typography variant="subtitle2" align="center">
-                      SHARES
-                    </Typography>
-                  </Grid>
-                </Grid>
+        <Grid container spacing={2}>
+          {videoList.slice(1).map((videoUrl, index) => (
+            <React.Fragment key={videoUrl}>
+              <Grid item xs={12} lg={6}>
+                <ReactPlayer
+                  className="react-player"
+                  url={videoUrl}
+                  width="100%"
+                  height="100%"
+                />
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <Grid
-                  container
-                  alignItems="center"
-                  spacing={1}
-                >
-                  <Grid item>
-                    <IconAccessPoint stroke={1.5} />
-                  </Grid>
-                  <Grid item sm zeroMinWidth>
-                    <Typography variant="h5" align="center">
-                      600
-                    </Typography>
-                    <Typography variant="subtitle2" align="center">
-                      NETWORK
-                    </Typography>
-                  </Grid>
-                </Grid>
+              <Grid item xs={12} lg={6}>
+                <Typography variant="body1" gutterBottom>
+                  Video Description {index + 1}
+                </Typography>
               </Grid>
-            </Grid>
-            <Grid container alignItems="center" spacing={0}>
-              <Grid item xs={12} sm={6}>
-                <Grid
-                  container
-                  alignItems="center"
-                  spacing={1}
-                >
-                  <Grid item>
-                    <IconCircles stroke={1.5} />
-                  </Grid>
-                  <Grid item sm zeroMinWidth>
-                    <Typography variant="h5" align="center">
-                      3550
-                    </Typography>
-                    <Typography variant="subtitle2" align="center">
-                      RETURNS
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Grid
-                  container
-                  alignItems="center"
-                  spacing={1}
-                >
-                  <Grid item>
-                    <IconCreditCard stroke={1.5} />
-                  </Grid>
-                  <Grid item sm zeroMinWidth>
-                    <Typography variant="h5" align="center">
-                      100%
-                    </Typography>
-                    <Typography variant="subtitle2" align="center">
-                      ORDER
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid item xs={12}>
-            E{" "}
-          </Grid>
-          <Grid item xs={12}>
-            F
-          </Grid>
-          <Grid item xs={12}>
-            G
-          </Grid>
+            </React.Fragment>
+          ))}
         </Grid>
       </Grid>
     </Grid>
