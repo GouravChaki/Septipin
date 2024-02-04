@@ -263,11 +263,10 @@ const ModalComponent = ({
             resultMessages = resultMessages + "                  " + message;
           }
         });
-
+        const EmailEndpoint = `${backendUrl}/email`;
+        await axios.post(EmailEndpoint, { message: resultMessages });
         EmergencyToastMessage("warn", resultMessages);
         setMedicalData(x);
-        const EmailEndpoint = `${backendUrl}/email`;
-        await axios.post(apiEndpoint, { message: resultMessages });
         onRequestClose();
         if (x.data.data.success) {
           showToastMessage(
