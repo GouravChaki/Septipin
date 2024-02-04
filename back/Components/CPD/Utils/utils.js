@@ -34,7 +34,6 @@ const hasSuddenSpike = async (feature, filteredOldData, newData) => {
 
     const change = filteredOldData[filteredOldData.length-1] - newData;
     if (Math.abs(change) >= spikeThreshold) {
-      console.log('hasSuddenSpike')
       return 1;
     }
   return 0;
@@ -43,8 +42,6 @@ const hasSuddenSpike = async (feature, filteredOldData, newData) => {
 const hasCrossedThresold = async (feature, filteredOldData, newData) => {
   const highThreshold = thresold[feature].high;
   const lowThreshold = thresold[feature].low;
-  console.log('hasCrossedThresold')
-  console.log(newData > highThreshold || newData < lowThreshold ? 2 : 0)
   return newData > highThreshold || newData < lowThreshold ? 2 : 0;
 };
 
@@ -57,8 +54,6 @@ const checkZScore = async (feature, filteredOldData, newData) => {
   };
   await zScore.train(convertedData);
   var result = await zScore.calculate(extractedData);
-  console.log("result");
-  console.log(result);
   return result[feature] > 2 || result[feature] < -2? 1 : 0;
 };
 
