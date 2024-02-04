@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Grid } from "@mui/material";
+import { Typography, Grid, Paper } from "@mui/material";
 import Drawr from "../Drawer";
 import ModalB from "../Modal";
 import ChartCard, {
@@ -18,6 +18,23 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import ModalComponent from "../../../common/Calendar/ModalComponent";
+import { useAuth } from "../../../common/hooks/useAuth";
+
+const severityColors = {
+  '0': "#DAF7A6",
+  '1': "#FFC300",
+  '2': "#EC5800",
+  '3': "#D70040",
+  '4' : "#7F00FF"
+};
+
+const getColor = (value) => {
+  if (value == 0) return severityColors['0'];
+  else if (value ==1) return severityColors['1'];
+  else if (value ==2) return severityColors['2'];
+  else if (value ==3) return severityColors['3'];
+  else if (value ==4) return severityColors['4']
+};
 
 const data = [
   { name: "1", uv: 400, pv: 2400, amt: 2400 },
@@ -35,16 +52,18 @@ const data = [
 const truncatedData = data.slice(0, 5);
 
 const lineChartsData = [
-  { title: "Haemoglobin", data: truncatedData, org: data },
-  { title: "Systolic Blood Pressure", data: truncatedData, org: data },
-  { title: "Diastolic Blood Pressure", data: truncatedData, org: data },
-  { title: "Blood Sugar", data: truncatedData, org: data },
-  { title: "Thyroid", data: truncatedData, org: data },
-  { title: "Fetal Movement", data: truncatedData, org: data },
+  { title: "Haemoglobin",value: "haemoglobin", data: truncatedData, org: data },
+  { title: "Systolic Blood Pressure",value : "systolic", data: truncatedData, org: data },
+  { title: "Diastolic Blood Pressure",value : "diastolic" ,data: truncatedData, org: data },
+  { title: "Blood Sugar", value : "blood_sugar" , data: truncatedData, org: data },
+  { title: "Thyroid", value : "thyroid" , data: truncatedData, org: data },
+  { title: "Fetal Movement", value: "fetal_movement" , data: truncatedData, org: data },
 ];
 
 const LineChartsPage = () => {
+  const { severity } = useAuth();
   const [drawerStates, setDrawerStates] = useState(false);
+  console.log(severity)
   const [modalStates, setModalStates] = useState(
     lineChartsData.map(() => false)
   );
@@ -52,6 +71,7 @@ const LineChartsPage = () => {
   const [selectedChartData, setSelectedChartData] = useState(null);
   const [date, setDate] = useState(null);
   const [isCurrentDate, setIsCurrentDate] = useState('0');
+
   const toggleDrawer = () => {
     setDrawerStates(!drawerStates);
   };
@@ -72,7 +92,14 @@ const LineChartsPage = () => {
 
   const onRequestClose = () => {
     setModalIsOpen(false);
-    setIsCurrentDate('0')
+    setIsCurrentDate('0');
+  };
+
+  const getChartValue = (chart) => {
+    if (severity && severity[chart.value]) {
+      return severity[chart.value];
+    }
+    return null;
   };
 
   return (
@@ -80,25 +107,35 @@ const LineChartsPage = () => {
       <Typography
         variant="h4"
         gutterBottom
-        style={{ fontWeight: "bold", color: "#f2518f" }}
-      ></Typography>
+        style={{ fontWeight: "bold", color: "#f2518f", textAlign: "center" }}
+      >
+        Health Statistics Overview
+      </Typography>
 
       <Grid container spacing={4} justifyContent="center">
         {lineChartsData.map((chart, index) => (
           <Grid item xs={12} md={6} lg={4} key={index}>
             <ChartCard elevation={5}>
-              <Typography
-                variant="h6"
-                gutterBottom
+              <Paper
                 style={{
+                  backgroundColor: getColor(getChartValue(chart)),
+                  padding: "20px",
+                  borderRadius: "8px",
                   marginBottom: "20px",
-                  textAlign: "center",
-                  color: "black",
-                  fontWeight: "bold",
                 }}
               >
-                {chart.title}
-              </Typography>
+                <Typography
+                  variant="h6"
+                  gutterBottom
+                  style={{
+                    color: "#fff",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  {chart.title}
+                </Typography>
+              </Paper>
               <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={chart.data}>
                   <CartesianGrid strokeDasharray="3 3" />

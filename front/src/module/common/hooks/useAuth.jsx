@@ -2,7 +2,8 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useLocalStorage } from "./useLocalstorage";
 import axios from "axios";
 import qs from "qs";
-import { useNavigate } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
+import { useLocation } from "react-router-dom/dist/umd/react-router-dom.development";
 
 const AuthContext = createContext();
 const backendUrl = "http://localhost:3000";
@@ -15,18 +16,29 @@ export const AuthProvider = ({ children }) => {
   const [stats, setStats] = useState(null);
   const [severity, setSeverity] = useState(null);
   const navigate = useNavigate();
-
+  const location = useLocation();
   useEffect(() => {
     //profile fetch api will be called here
     const xyz = async () => {
-      await Profile();
+      await Profile("/");
     };
-    if (user || window.localStorage.getItem("user")) {
+      if (user) {
       xyz();
     } else {
       navigate("/login");
     }
   }, []);
+
+  // useEffect(() => {
+  //   const xyz = async (url) => {
+  //    await Profile(url)
+  //   };
+
+  //   const url = location.pathname;
+  //   xyz(url);
+
+  // }, [location]);
+
   const login = async ({ email, password }) => {
     try {
       let data = {
@@ -74,20 +86,20 @@ export const AuthProvider = ({ children }) => {
     navigate("/login");
   };
 
-  const Profile = async () => {
+  const Profile = async (url) => {
     try {
       const apiEndpoint = `${backendUrl}/profile_fetch`;
       const res = await axios.post(apiEndpoint, { email: email });
       console.log(res.data);
       if (res.data.success) {
-        setProfileStatus(res.data.data.patient.profile_status);
-        setPatientId(res.data.data.patient._id);
-        setStats(res.data.data.disease.disease);
-        setSeverity(res.data.data.disease.severity);
-        if (res.data.data.patient.profile_status == false) {
+        setProfileStatus(res.data?.data?.patient.profile_status);
+        setPatientId(res.data?.data?.patient._id);
+        setStats(res.data?.data?.disease.disease);
+        setSeverity(res.data?.data?.disease.severity);
+        if (res.data?.data?.patient.profile_status == false) {
           navigate("/profile");
         } else {
-          navigate("/");
+          navigate(url);
         }
       }
     } catch (error) {
