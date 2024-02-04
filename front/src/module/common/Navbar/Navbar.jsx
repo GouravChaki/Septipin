@@ -104,7 +104,7 @@ const Navbar = () => {
       <AppBar position="fixed" style={styles.appBar}>
         <Toolbar style={styles.toolbar}>
           <Menu onClick={handleDrawerToggle} />
-          <Typography variant="h6">Your Logo</Typography>
+          <Typography variant="h6">Septipin</Typography>
           <div style={styles.socialIcons}>
             <Link href="#" color="inherit">
               <GitHub />
