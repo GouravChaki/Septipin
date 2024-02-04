@@ -231,11 +231,11 @@ const ModalComponent = ({
         const fetalMovementValues = x.data.data.disease.map(
           (entry) => entry?.fetal_movement
         );
-        let hae = await checkCPD(formattedDate,haemoglobinValues, haemoglobin, "hemoglobin");
-        let sys = await checkCPD(formattedDate,systolicValues, systolic, "systolic");
-        let dias = await checkCPD(formattedDate,diastolicValues, diastolic, "diastolic");
-        let sugar = await checkCPD(formattedDate,bloodSugarValues, blood_sugar, "sugar");
-        let thy = await checkCPD(formattedDate,thyroidValues, thyroid, "thyroid");
+        let hae = await checkCPD(patientId,formattedDate,haemoglobinValues, haemoglobin, "hemoglobin");
+        let sys = await checkCPD(patientId,formattedDate,systolicValues, systolic, "systolic");
+        let dias = await checkCPD(patientId,formattedDate,diastolicValues, diastolic, "diastolic");
+        let sugar = await checkCPD(patientId,formattedDate,bloodSugarValues, blood_sugar, "sugar");
+        let thy = await checkCPD(patientId,formattedDate,thyroidValues, thyroid, "thyroid");
         console.log(hae,sys,dias,sugar,thy)
         const arr = [hae.data?.message , sys.data?.message , dias.data?.message , sugar.data?.message, thy.data?.message]
         const nm = ["Haemoglobin","Systolic Blood Pressure","Diastolic Blood Pressure","Blood Sugar", "Thyroid"]
@@ -297,11 +297,11 @@ const ModalComponent = ({
         const fetalMovementValues = x.data.data.disease.map(
           (entry) => entry?.fetal_movement
         );
-        let hae = await checkCPD(haemoglobinValues, haemoglobin, "hemoglobin");
-        let sys = await checkCPD(systolicValues, systolic, "systolic");
-        let dias = await checkCPD(diastolicValues, diastolic, "diastolic");
-        let sugar = await checkCPD(bloodSugarValues, blood_sugar, "sugar");
-        let thy = await checkCPD(thyroidValues, thyroid, "thyroid");
+        let hae = await checkCPD(patientId,formattedDate,haemoglobinValues, haemoglobin, "hemoglobin");
+        let sys = await checkCPD(patientId,formattedDate,systolicValues, systolic, "systolic");
+        let dias = await checkCPD(patientId,formattedDate,diastolicValues, diastolic, "diastolic");
+        let sugar = await checkCPD(patientId,formattedDate,bloodSugarValues, blood_sugar, "sugar");
+        let thy = await checkCPD(patientId,formattedDate,thyroidValues, thyroid, "thyroid");
         const arr = [hae.data?.message , sys.data?.message , dias.data?.message , sugar.data?.message, thy.data?.message]
         const nm = ["Haemoglobin","Systolic Blood Pressure","Diastolic Blood Pressure","Blood Sugar", "Thyroid"]
         let resultMessages = "";
