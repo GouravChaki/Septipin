@@ -263,73 +263,11 @@ const ModalComponent = ({
             resultMessages = resultMessages + "                  " + message;
           }
         });
-        const EmailEndpoint = `${backendUrl}/email`;
-        await axios.post(EmailEndpoint, { message: resultMessages });
         EmergencyToastMessage("warn", resultMessages);
         setMedicalData(x);
-        onRequestClose();
-        if (x.data.data.success) {
-          showToastMessage(
-            "success",
-            "Medical Statistics Created Successfully",
-            3000,
-            4
-          );
-        }
-      // } else {
-      //   const apiEndpoint = `${backendUrl}/disease_update`;
-      //   const x = await axios.post(apiEndpoint, obj);
-
-      //   const haemoglobinValues = await x.data?.data?.disease.map(
-      //     (entry) => entry?.haemoglobin
-      //   );
-      //   const systolicValues = await x.data?.data?.disease.map(
-      //     (entry) => entry?.systolic
-      //   );
-      //   const diastolicValues = await x.data?.data?.disease.map(
-      //     (entry) => entry?.diastolic
-      //   );
-      //   const bloodSugarValues = await x.data?.data?.disease.map(
-      //     (entry) => entry?.blood_sugar
-      //   );
-      //   const thyroidValues = await x.data.data.disease.map((entry) => entry?.thyroid);
-      //   const fetalMovementValues = await x.data.data.disease.map(
-      //     (entry) => entry?.fetal_movement
-      //   );
-      //   let hae = await checkCPD(patientId,formattedDate,haemoglobinValues, haemoglobin, "hemoglobin");
-      //   let sys = await checkCPD(patientId,formattedDate,systolicValues, systolic, "systolic");
-      //   let dias = await checkCPD(patientId,formattedDate,diastolicValues, diastolic, "diastolic");
-      //   let sugar = await checkCPD(patientId,formattedDate,bloodSugarValues, blood_sugar, "sugar");
-      //   let thy = await checkCPD(patientId,formattedDate,thyroidValues, thyroid, "thyroid");
-      //   const arr = [hae.data?.message , sys.data?.message , dias.data?.message , sugar.data?.message, thy.data?.message]
-      //   const nm = ["Haemoglobin","Systolic Blood Pressure","Diastolic Blood Pressure","Blood Sugar", "Thyroid"]
-      //   let resultMessages = "";
-
-      //   arr.forEach((item, index) => {
-      //     if ( item && item.result >= 2) {
-      //       const anomalies = [];
-      //       // Check for specific conditions and add to anomalies array
-      //       if (item.zScore >= 2) {
-      //         anomalies.push("High zScore");
-      //       }
-      //       if (item.suddenSpike >= 2) {
-      //         anomalies.push("Sudden Spike");
-      //       }
-      //       if (item.thresoldValue >= 2) {
-      //         anomalies.push("Threshold Exceeded");
-      //       }
-      
-      //       // Generate the message
-      //       const message =
-      //         `${nm[index]}: We have detected certain changes in your vitals. ` +
-      //         `Anomalies found: ${anomalies.join(', ')}`;
-      
-      //       resultMessages = resultMessages + "                  " + message;
-      //     }
-      //   });
-      //   EmergencyToastMessage('warn',resultMessages)
-      // }
-      setIsLoading(false);
+        const EmailEndpoint = `${backendUrl}/email`;
+        setIsLoading(false);
+        return await axios.post(EmailEndpoint, { message: resultMessages });
     } catch (error) {
       setIsLoading(false);
       console.error("Validation failed:", error);

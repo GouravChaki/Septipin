@@ -12,7 +12,6 @@ import { useNavigate } from "react-router-dom";
 import { showToastMessage } from "../../../../utils.js";
 import "react-toastify/dist/ReactToastify.css";
 import { HashLoader } from "react-spinners";
-import LogoPage from "../../../common/Logo/logo.jsx";
 
 function Login() {
   const [form] = Form.useForm();

@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
       if (user) {
       xyz();
     } else {
-      navigate("/login");
+      navigate("/");
     }
   }, []);
 
